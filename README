@@ -5,8 +5,18 @@ service integration.
 Configure your Tracker API key, and Project ID in a config.yml file placed in 
 the same directory as this app.  It should look something like:
 
-tracker_api_token: a1230e72340e3babc96d5e2fab67c18d
-tracker_project_id: 123
+tracker_github_hook:
+  github_url: 'http://github.com/chris/tracker_github_hook'
+  tracker_api_token: a1230e72340e3babc96d5e2fab67c18d
+  tracker_project_id: 123
+  
+The label ('tracker_github_hook' in this case) is arbitrary and not used, it's
+just their to be a useful bit of info to humans/organize the nested settings, 
+and is not used.  This setup allows you to have one service that supports
+multiple Tracker/GitHub projects, just define one of the above blocks for each
+one, and then anytime GitHub sends a push, the service will tease out which
+GitHub repo it came from and correlate that to which Tracker project you've
+assigned to that.
 
 When you make commits to Git/GitHub, and want a comment and optionally a state 
 update made to a story in Tracker, add the following text to your commit 
@@ -32,7 +42,5 @@ RestClient: http://rubyforge.org/projects/rest-client/
 
 
 TODO:
-- Support multiple Tracker projects with one post-receive hook server by having
-  this server look at the repo info that comes in with each push, and
-  correlating that to info in the config file.  Is the repo 'name' sufficient,
-  or should we require the URL in config info.
+- cleanup, better testing
+- support other story changes, like assigned user, etc.

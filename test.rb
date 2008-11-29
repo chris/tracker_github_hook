@@ -8,7 +8,7 @@ payload = <<-eos
 payload={
   "before": "5aef35982fb2d34e9d9d4502f6ede1072793222d",
   "repository": {
-    "url": "http://github.com/defunkt/github",
+    "url": "http://github.com/chris/tracker_github_hook",
     "name": "github",
     "description": "You're lookin' at it.",
     "watchers": 5,
@@ -27,7 +27,7 @@ payload={
         "email": "chris@cobaltedge.com",
         "name": "Chris Bailey" 
       },
-      "message": "This one is a comment only 10 [Story294325]",
+      "message": "This one is a comment only 10 [Story294825]",
       "timestamp": "2008-02-15T14:57:17-08:00",
       "added": ["filepath.rb"]
     },
@@ -38,7 +38,7 @@ payload={
         "email": "chris@cobaltedge.com",
         "name": "Chris Bailey" 
       },
-      "message": "comment and state change 10 [Story294325 state:finished]",
+      "message": "comment and state change 10 [Story294825 state:finished]",
       "timestamp": "2008-02-15T14:36:34-08:00" 
     }
   ],

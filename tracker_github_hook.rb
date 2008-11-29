@@ -24,18 +24,17 @@ Sinatra::Application.default_options.merge!(
   :raise_errors => true
 )
 
-TRACKER_HOST = 'www.pivotaltracker.com'
-
 
 # load up configuration from YAML file
 configure do
   begin
     config = open(File.expand_path(File.dirname(__FILE__) + '/config.yml')) { |f| YAML.load(f) }
-
-    TRACKER_API_TOKEN = config['tracker_api_token']
-    TRACKER_PROJECT_ID = config['tracker_project_id']
-
-    raise "required configuration settings not found" unless TRACKER_API_TOKEN && TRACKER_PROJECT_ID    
+    
+    PROJECTS = Hash.new
+    config.each do |project|
+      raise "required configuration settings not found" unless project[1]['tracker_api_token'] && project[1]['tracker_project_id']    
+      PROJECTS[project[1]['github_url']] = { :api_token => project[1]['tracker_api_token'], :project_id => project[1]['tracker_project_id']}
+    end
   rescue => e
     puts "Failed to startup: #{e.message}"
     puts "Ensure you have a config.yml in this directory with the'tracker_api_token' and 'tracker_project_id' keys/values set."
@@ -47,14 +46,15 @@ end
 # The handler for the GitHub post-receive hook
 post '/' do
   push = JSON.parse(params[:payload])
-  push['commits'].each { |commit| process_commit(commit) }
+  tracker_info = PROJECTS[push['repository']['url']]
+  push['commits'].each { |commit| process_commit(tracker_info, commit) }
   num_commits = push['commits'].length
   "Processed #{num_commits} commits"
 end
 
   
 helpers do
-  def process_commit(commit)
+  def process_commit(tracker_info, commit)
     # get commit message
     message = commit['message']
   
@@ -64,37 +64,28 @@ helpers do
       story_id = tracker_trigger[1]
     
       # post comment to the story
-      post_tracker_comment(story_id, commit['id'], message)
+      RestClient.post(create_api_url(tracker_info[:project_id], story_id, '/notes'),
+                      "<note><text>(from [#{commit['id']}]) #{message}</text></note>", 
+                      tracker_api_headers(tracker_info[:api_token]))
     
       # See if we have a state change
       state = tracker_trigger[2].match(/.*state:(\s?\w+).*/)
       if state
-        state = state[1]
-        state.strip!
+        state = state[1].strip
  
-        change_tracker_story_state(story_id, state)
+        RestClient.put(create_api_url(tracker_info[:project_id], story_id), 
+                       "<story><current_state>#{state}</current_state></story>", 
+                       tracker_api_headers(tracker_info[:api_token]))
       end     
     end
   end
 
-  def post_tracker_comment(story_id, commit_id, comment)
-    RestClient.post(create_api_url(story_id, '/notes'),
-                    "<note><text>(from [#{commit_id}]) #{comment}</text></note>", 
-                    tracker_api_headers)
-  end
-
-  def change_tracker_story_state(story_id, state)
-    RestClient.put(create_api_url(story_id), 
-                   "<story><current_state>#{state}</current_state></story>", 
-                   tracker_api_headers)
+  def create_api_url(project_id, story_id, extra_path_elemets='')
+    "http://www.pivotaltracker.com/services/v1/projects/#{project_id}/stories/#{story_id}#{extra_path_elemets}"
   end
   
-  def create_api_url(story_id, extra_path_elemets='')
-    "http://www.pivotaltracker.com/services/v1/projects/#{TRACKER_PROJECT_ID}/stories/#{story_id}#{extra_path_elemets}"
-  end
-  
-  def tracker_api_headers
-    { 'X-TrackerToken' => TRACKER_API_TOKEN, 'Content-type' => 'application/xml' }
+  def tracker_api_headers(api_token)
+    { 'X-TrackerToken' => api_token, 'Content-type' => 'application/xml' }
   end
 
 end
