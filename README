@@ -1,0 +1,31 @@
+This app is a small server to serve as a GitHub Post-Receive hook to add 
+comments, and update state in Pivotal Tracker, similar to say the Lighthouse
+service integration.
+
+Configure your Tracker API key, and Project ID in a config.yml file placed in 
+the same directory as this app.  It should look something like:
+
+tracker_api_token: a1230e72340e3babc96d5e2fab67c18d
+tracker_project_id: 123
+
+When you make commits to Git/GitHub, and want a comment and optionally a state 
+update made to a story in Tracker, add the following text to your commit 
+message:
+    
+    [Story#####]
+    
+or
+
+    [Story##### state:finished]
+
+where ##### is the story number (see the bottom of an expanded story in 
+Tracker for its ID).
+
+This project also requires the "rest-client" rubygem.
+
+More information for, and thanks to:
+
+Pivotal Tracker API: http://www.pivotaltracker.com/help/api
+GitHub Post-Receive Hooks: http://github.com/guides/post-receive-hooks
+Sinatra: http://sinatra.rubyforge.org/
+RestClient: http://rubyforge.org/projects/rest-client/
