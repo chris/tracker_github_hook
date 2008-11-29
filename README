@@ -29,3 +29,10 @@ Pivotal Tracker API: http://www.pivotaltracker.com/help/api
 GitHub Post-Receive Hooks: http://github.com/guides/post-receive-hooks
 Sinatra: http://sinatra.rubyforge.org/
 RestClient: http://rubyforge.org/projects/rest-client/
+
+
+TODO:
+- Support multiple Tracker projects with one post-receive hook server by having
+  this server look at the repo info that comes in with each push, and
+  correlating that to info in the config file.  Is the repo 'name' sufficient,
+  or should we require the URL in config info.
