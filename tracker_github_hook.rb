@@ -18,13 +18,6 @@ require 'rest_client'
 require 'yaml'
 
 
-Sinatra::Application.default_options.merge!(
-  :run => true,
-  :env => :production,
-  :raise_errors => true
-)
-
-
 # load up configuration from YAML file
 configure do
   begin

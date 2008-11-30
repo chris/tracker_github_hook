@@ -31,7 +31,11 @@ or
 where ##### is the story number (see the bottom of an expanded story in 
 Tracker for its ID).
 
-This project also requires the "rest-client" rubygem.
+This project also requires the following rubygems:
+- sinatra
+- rest-client
+- json
+
 
 More information for, and thanks to:
 
