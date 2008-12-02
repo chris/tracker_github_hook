@@ -32,6 +32,17 @@ payload={
       "added": ["filepath.rb"]
     },
     {
+      "id": "41a212ee83ca321e3c8cf465891cb7216a705f59",
+      "url": "http://github.com/defunkt/github/commit/41a212ee83ca127e3c8cf465891ab7216a705f59",
+      "author": {
+        "email": "chris@cobaltedge.com",
+        "name": "Chris Bailey" 
+      },
+      "message": "This one does not have a story association",
+      "timestamp": "2008-02-15T14:58:17-08:00",
+      "added": ["filepath.rb"]
+    },
+    {
       "id": "de8251ff97ee194a289832576287d6f8ad74e3d0",
       "url": "http://github.com/defunkt/github/commit/de8251ff97ee194a289832576287d6f8ad74e3d0",
       "author": {

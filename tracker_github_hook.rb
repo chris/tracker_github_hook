@@ -38,11 +38,11 @@ end
 
 # The handler for the GitHub post-receive hook
 post '/' do
+  @num_commits = 0
   push = JSON.parse(params[:payload])
   tracker_info = PROJECTS[push['repository']['url']]
   push['commits'].each { |commit| process_commit(tracker_info, commit) }
-  num_commits = push['commits'].length
-  "Processed #{num_commits} commits"
+  "Processed #{@num_commits} commits for stories"
 end
 
   
@@ -54,6 +54,7 @@ helpers do
     # see if there is a Tracker story trigger, and if so, get story ID
     tracker_trigger = message.match(/\[Story(\d+)(.*)\]/)
     if tracker_trigger
+      @num_commits += 1
       story_id = tracker_trigger[1]
     
       # post comment to the story
