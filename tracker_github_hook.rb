@@ -46,7 +46,7 @@ post '/' do
 end
 
 get '/' do
-    "Hello"
+    raise "oh crap"
 end
 
   
