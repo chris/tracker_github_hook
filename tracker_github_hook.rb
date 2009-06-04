@@ -45,6 +45,10 @@ post '/' do
   "Processed #{@num_commits} commits for stories"
 end
 
+get '/' do
+    "Hello"
+end
+
   
 helpers do
   def process_commit(tracker_info, commit)
