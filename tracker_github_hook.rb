@@ -35,8 +35,6 @@ configure do
   end
 end
 
-# example payload (json): {"after":"88e947d8d342b69638df47bf372fc2612f24dd19","ref":"refs\/heads\/master","repository":{"owner":{"name":"apinstein","email":"apinstein@mac.com"},"description":"","forks":0,"name":"neybor","private":true,"url":"http:\/\/github.com\/apinstein\/neybor","fork":false,"watchers":3,"homepage":""},"before":"ed06823f0b08b80586a1431409c590aaa41ca4f9","commits":[{"removed":[],"modified":["classes\/syndication\/Trulia.php","classes\/syndication\/test\/HotPadsSyndicatorTest.php","classes\/syndication\/test\/TruliaSyndicatorTest.php"],"added":[],"url":"http:\/\/github.com\/apinstein\/neybor\/commit\/fb8ee7d321db5ccf22808fde51eeecaa1b047a44","timestamp":"2009-06-03T11:22:22-07:00","message":"Merge conflicting changes from file rname and git-svn cross-updating","author":{"name":"Alan Pinstein","email":"apinstein@mac.com"},"id":"fb8ee7d321db5ccf22808fde51eeecaa1b047a44"},{"removed":[],"modified":["README"],"added":[],"url":"http:\/\/github.com\/apinstein\/neybor\/commit\/88e947d8d342b69638df47bf372fc2612f24dd19","timestamp":"2009-06-03T11:33:56-07:00","message":"[Story762537 state:finished] more pivotal-github testing","author":{"name":"Alan Pinstein","email":"apinstein@mac.com"},"id":"88e947d8d342b69638df47bf372fc2612f24dd19"}]}
-
 # The handler for the GitHub post-receive hook
 post '/' do
   @num_commits = 0
