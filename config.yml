@@ -1,4 +1,4 @@
 tracker_github_hook:
-  github_url: 'https://github.com/apinstein/neybor'
+  github_url: 'http://github.com/apinstein/neybor'
   tracker_api_token: e0609ada8a0817d27bc1577bfd4a2cf8
   tracker_project_id: 13545
