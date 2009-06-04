@@ -35,11 +35,11 @@ configure do
   end
 end
 
+# example payload (json): {"after":"88e947d8d342b69638df47bf372fc2612f24dd19","ref":"refs\/heads\/master","repository":{"owner":{"name":"apinstein","email":"apinstein@mac.com"},"description":"","forks":0,"name":"neybor","private":true,"url":"http:\/\/github.com\/apinstein\/neybor","fork":false,"watchers":3,"homepage":""},"before":"ed06823f0b08b80586a1431409c590aaa41ca4f9","commits":[{"removed":[],"modified":["classes\/syndication\/Trulia.php","classes\/syndication\/test\/HotPadsSyndicatorTest.php","classes\/syndication\/test\/TruliaSyndicatorTest.php"],"added":[],"url":"http:\/\/github.com\/apinstein\/neybor\/commit\/fb8ee7d321db5ccf22808fde51eeecaa1b047a44","timestamp":"2009-06-03T11:22:22-07:00","message":"Merge conflicting changes from file rname and git-svn cross-updating","author":{"name":"Alan Pinstein","email":"apinstein@mac.com"},"id":"fb8ee7d321db5ccf22808fde51eeecaa1b047a44"},{"removed":[],"modified":["README"],"added":[],"url":"http:\/\/github.com\/apinstein\/neybor\/commit\/88e947d8d342b69638df47bf372fc2612f24dd19","timestamp":"2009-06-03T11:33:56-07:00","message":"[Story762537 state:finished] more pivotal-github testing","author":{"name":"Alan Pinstein","email":"apinstein@mac.com"},"id":"88e947d8d342b69638df47bf372fc2612f24dd19"}]}
 
 # The handler for the GitHub post-receive hook
 post '/' do
   @num_commits = 0
-  raise params[:payload]
   push = JSON.parse(params[:payload])
   tracker_info = PROJECTS[push['repository']['url']]
   push['commits'].each { |commit| process_commit(tracker_info, commit) }
@@ -55,12 +55,16 @@ helpers do
   def process_commit(tracker_info, commit)
     # get commit message
     message = commit['message']
+
+    info = tracker_info[:project_id]
   
     # see if there is a Tracker story trigger, and if so, get story ID
     tracker_trigger = message.match(/\[Story(\d+)(.*)\]/)
     if tracker_trigger
       @num_commits += 1
       story_id = tracker_trigger[1]
+
+      info += "storyid: #{story_id}"
     
       # post comment to the story
       RestClient.post(create_api_url(tracker_info[:project_id], story_id, '/notes'),
@@ -71,6 +75,8 @@ helpers do
       state = tracker_trigger[2].match(/.*state:(\s?\w+).*/)
       if state
         state = state[1].strip
+
+        info += " state: #{state}"
  
         RestClient.put(create_api_url(tracker_info[:project_id], story_id), 
                        "<story><current_state>#{state}</current_state></story>", 
