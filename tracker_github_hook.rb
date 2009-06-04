@@ -35,14 +35,18 @@ configure do
   end
 end
 
-
 # The handler for the GitHub post-receive hook
 post '/' do
   @num_commits = 0
   push = JSON.parse(params[:payload])
   tracker_info = PROJECTS[push['repository']['url']]
+  raise "GitHub Webook triggerd for repo: #{push['repository']['url']}; no matching github_url in config.yml" if tracker_info == nil
   push['commits'].each { |commit| process_commit(tracker_info, commit) }
   "Processed #{@num_commits} commits for stories"
+end
+
+get '/' do
+    "Have your github webhook point here; bridge works automatically via POST"
 end
 
   
@@ -50,13 +54,13 @@ helpers do
   def process_commit(tracker_info, commit)
     # get commit message
     message = commit['message']
-  
+
     # see if there is a Tracker story trigger, and if so, get story ID
     tracker_trigger = message.match(/\[Story(\d+)(.*)\]/)
     if tracker_trigger
       @num_commits += 1
       story_id = tracker_trigger[1]
-    
+
       # post comment to the story
       RestClient.post(create_api_url(tracker_info[:project_id], story_id, '/notes'),
                       "<note><text>(from [#{commit['id']}]) #{message}</text></note>", 
@@ -66,7 +70,7 @@ helpers do
       state = tracker_trigger[2].match(/.*state:(\s?\w+).*/)
       if state
         state = state[1].strip
- 
+
         RestClient.put(create_api_url(tracker_info[:project_id], story_id), 
                        "<story><current_state>#{state}</current_state></story>", 
                        tracker_api_headers(tracker_info[:api_token]))
