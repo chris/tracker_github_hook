@@ -42,7 +42,7 @@ post '/' do
   @num_commits = 0
   push = JSON.parse(params[:payload])
   tracker_info = PROJECTS[push['repository']['url']]
-  raise "GitHub Webook triggerd for repo: #{push['repository']['url']}; no matching github_url in config.yml"
+  raise "GitHub Webook triggerd for repo: #{push['repository']['url']}; no matching github_url in config.yml" if tracker_info == nil
   push['commits'].each { |commit| process_commit(tracker_info, commit) }
   "Processed #{@num_commits} commits for stories"
 end
