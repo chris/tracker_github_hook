@@ -39,6 +39,7 @@ end
 # The handler for the GitHub post-receive hook
 post '/' do
   @num_commits = 0
+  raise params[:payload]
   push = JSON.parse(params[:payload])
   tracker_info = PROJECTS[push['repository']['url']]
   push['commits'].each { |commit| process_commit(tracker_info, commit) }
@@ -46,7 +47,7 @@ post '/' do
 end
 
 get '/' do
-    raise "oh crap"
+    "Have your github webhook point here; bridge works automatically via POST"
 end
 
   
