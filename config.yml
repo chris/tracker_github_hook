@@ -1,4 +1,12 @@
-tracker_github_hook:
+neybor:
   github_url: 'http://github.com/apinstein/neybor'
-  tracker_api_token: e0609ada8a0817d27bc1577bfd4a2cf8
+  tracker_api_token: a00fbc0b53e13a8ad1c8f01b19b0537b
   tracker_project_id: 13545
+tourbuzz:
+  github_url: 'http://github.com/apinstein/tourbuzz'
+  tracker_api_token: a00fbc0b53e13a8ad1c8f01b19b0537b
+  tracker_project_id: 15381
+tourbuzzplayer:
+  github_url: 'http://github.com/lorennorman/tourbuzz-panoviewer'
+  tracker_api_token: a00fbc0b53e13a8ad1c8f01b19b0537b
+  tracker_project_id: 15381
