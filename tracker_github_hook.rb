@@ -56,7 +56,7 @@ helpers do
     # get commit message
     message = commit['message']
 
-    info = tracker_info[:project_id]
+    info = '' + tracker_info[:project_id]
   
     # see if there is a Tracker story trigger, and if so, get story ID
     tracker_trigger = message.match(/\[Story(\d+)(.*)\]/)
