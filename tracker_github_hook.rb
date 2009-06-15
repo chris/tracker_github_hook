@@ -26,7 +26,7 @@ configure do
     PROJECTS = Hash.new
     config.each do |project|
       raise "required configuration settings not found" unless project[1]['tracker_api_token'] && project[1]['tracker_project_id']    
-      PROJECTS[project[1]['github_url']] = { :api_token => project[1]['tracker_api_token'], :project_id => project[1]['tracker_project_id']}
+      PROJECTS[project[1]['github_url']] = { :api_token => project[1]['tracker_api_token'], :project_id => project[1]['tracker_project_id'], :ref => project[1]['ref'] }
     end
   rescue => e
     puts "Failed to startup: #{e.message}"
@@ -41,6 +41,9 @@ post '/' do
   push = JSON.parse(params[:payload])
   tracker_info = PROJECTS[push['repository']['url']]
   raise "GitHub Webook triggerd for repo: #{push['repository']['url']}; no matching github_url in config.yml" if tracker_info == nil
+  if tracker_info[:ref] && push['ref'] != tracker_info[:ref]
+      puts "Skipping commit for non-tracked ref #{push['ref']}"
+  end
   push['commits'].each { |commit| process_commit(tracker_info, commit) }
   "Processed #{@num_commits} commits for stories"
 end
