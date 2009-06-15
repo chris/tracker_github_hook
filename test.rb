@@ -27,7 +27,7 @@ payload={
         "email": "chris@cobaltedge.com",
         "name": "Chris Bailey" 
       },
-      "message": "This one is a comment only 10 [Story294825]",
+      "message": "This one is a comment only 10 [Story294825] and [Story1234] 2nd line commit",
       "timestamp": "2008-02-15T14:57:17-08:00",
       "added": ["filepath.rb"]
     },

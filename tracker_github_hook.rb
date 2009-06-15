@@ -59,10 +59,9 @@ helpers do
     message = commit['message']
 
     # see if there is a Tracker story trigger, and if so, get story ID
-    tracker_trigger = message.match(/\[Story(\d+)(.*)\]/)
-    if tracker_trigger
+    message.scan(/\[Story(\d+)([^\]]*)\]/) do |tracker_trigger|
       @num_commits += 1
-      story_id = tracker_trigger[1]
+      story_id = tracker_trigger[0]
 
       # post comment to the story
       RestClient.post(create_api_url(tracker_info[:project_id], story_id, '/notes'),
@@ -70,7 +69,7 @@ helpers do
                       tracker_api_headers(tracker_info[:api_token]))
     
       # See if we have a state change
-      state = tracker_trigger[2].match(/.*state:(\s?\w+).*/)
+      state = tracker_trigger[1].match(/.*state:(\s?\w+).*/)
       if state
         state = state[1].strip
 
