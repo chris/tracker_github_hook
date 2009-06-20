@@ -9,6 +9,7 @@ tracker_github_hook:
   github_url: 'http://github.com/chris/tracker_github_hook'
   tracker_api_token: a1230e72340e3babc96d5e2fab67c18d
   tracker_project_id: 123
+  ref: refs/heads/master
   
 The label ('tracker_github_hook' in this case) is arbitrary and not used, it's
 just their to be a useful bit of info to humans/organize the nested settings, 
@@ -17,6 +18,10 @@ multiple Tracker/GitHub projects, just define one of the above blocks for each
 one, and then anytime GitHub sends a push, the service will tease out which
 GitHub repo it came from and correlate that to which Tracker project you've
 assigned to that.
+
+The "ref" field is also optional; it will tell the hook to ignore commits on
+any branches other than the one listed. This is useful to prevent duplication
+of comments being pushed into Tracker if you have multiple remote branches.
 
 When you make commits to Git/GitHub, and want a comment and optionally a state 
 update made to a story in Tracker, add the following text to your commit 
@@ -30,6 +35,11 @@ or
 
 where ##### is the story number (see the bottom of an expanded story in 
 Tracker for its ID).
+
+A commit message can have more than one [Story####] block, but the entire 
+commit message will be added to both stories. The duplication is unfortunate
+but better than the alternative of ignoring additional story references
+altogether.
 
 This project also requires the following rubygems:
 - sinatra
