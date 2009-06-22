@@ -2,6 +2,8 @@ This app is a small server to serve as a GitHub Post-Receive hook to add
 comments, and update state in Pivotal Tracker, similar to say the Lighthouse
 service integration.
 
+Also, many thanks to Alan Pinstein (apinstein) for his many contributions.
+
 Configure your Tracker API key, and Project ID in a config.yml file placed in 
 the same directory as this app.  It should look something like:
 
