@@ -12,6 +12,14 @@ tracker_github_hook:
   tracker_api_token: a1230e72340e3babc96d5e2fab67c18d
   tracker_project_id: 123
   ref: refs/heads/master
+  user_api_tokens:
+    chris:
+      email: chris@cobaltedge.com
+      tracker_api_token: a1b2c3d4e5f67890
+    alan:
+      email: alan@example.com
+      tracker_api_token: 0987654321abcdef
+  
   
 The label ('tracker_github_hook' in this case) is arbitrary and not used, it's
 just their to be a useful bit of info to humans/organize the nested settings, 
@@ -24,6 +32,13 @@ assigned to that.
 The "ref" field is also optional; it will tell the hook to ignore commits on
 any branches other than the one listed. This is useful to prevent duplication
 of comments being pushed into Tracker if you have multiple remote branches.
+
+The "user_api_tokens" is optional - the primary "tracker_api_token" will be used
+by default.  But, if you do supply this block, then the hook will correlate the
+email address of the author of the GitHub commit, to that within this list, and
+if it finds a match, will use the specified Tracker API token.  This makes it so
+that the comment in your Tracker story shows up as being made by the same person
+making the GitHub commit (instead of whoever owns the default API token).
 
 When you make commits to Git/GitHub, and want a comment and optionally a state 
 update made to a story in Tracker, add the following text to your commit 
