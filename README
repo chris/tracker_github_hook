@@ -2,6 +2,15 @@ This app is a small server to serve as a GitHub Post-Receive hook to add
 comments, and update state in Pivotal Tracker, similar to say the Lighthouse
 service integration.
 
+As of January 23, 2010, Pivotal's Tracker API itself will have some support for
+doing this.  See: http://pivotallabs.com/users/dan/blog/articles/1135-pivotal-tracker-api-new-version-v3-to-be-released-on-jan-23
+However, note that, as of this writing, they only support a single API token,
+which means that all commits will be attributed to the Tracker member whose
+token is being used in the post-commit hook.  This project solves that by
+associating Tracker API tokens with GitHub users (so even if your GitHub and
+Tracker emails are different that's ok), and thus you have properly attributed
+comments in your Tracker stories when making a commit.
+
 Also, many thanks to Alan Pinstein (apinstein) for his many contributions.
 
 Configure your Tracker API key, and Project ID in a config.yml file placed in 
