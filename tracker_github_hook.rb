@@ -97,7 +97,7 @@ helpers do
   end
 
   def create_api_url(project_id, story_id, extra_path_elemets='')
-    "http://www.pivotaltracker.com/services/v1/projects/#{project_id}/stories/#{story_id}#{extra_path_elemets}"
+    "http://www.pivotaltracker.com/services/v2/projects/#{project_id}/stories/#{story_id}#{extra_path_elemets}"
   end
   
   def tracker_api_headers(api_token)
