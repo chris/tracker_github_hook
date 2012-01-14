@@ -1,3 +1,10 @@
+IMPORTANT UPDATE: This is no longer supported/maintained, and will most surely stop
+working on Jan 27, 2012 when Pivotal deprecates the Tracker API's prior to v3. Also,
+the standard GitHub-Pivotal Tracker service hook now handles everything this service
+did, and in fact works better now (better handles branch commits and avoiding duplicate
+comments in tracker due to merging branches).
+
+
 This app is a small server to serve as a GitHub Post-Receive hook to add 
 comments, and update state in Pivotal Tracker, similar to say the Lighthouse
 service integration.
